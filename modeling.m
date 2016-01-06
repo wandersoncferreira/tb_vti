@@ -197,37 +197,22 @@ data_out = raytrace_nmo(synt_seismic,dt,control_time,time_series,100);
 
 
 figure
-plotseismic(data_out(775:950,:),time_series(775:950),offset,'k');
+subplot(1,3,1)
+plotseis(data_out(775:950,:),time_series(775:950),offset);
 xlabel('Offset','Fontsize',7);
 ylabel('TWT (s)', 'Fontsize', 7);
-set(gca,'fontsize',5)
-
+set(gca,'fontsize',10)
 set(gcf, 'PaperUnits', 'inches');
-x_width=2.2; y_width=3.1;
+x_width=5.8; y_width=5.1;
 set(gcf, 'PaperPosition', [0 0 x_width y_width]); %
-saveas(gcf,'fig1_seismic.jpg')
 
-
-figure
-tVp = tVp./30.48;
-tVs = tVs./30.48;
-plot(tVp_iso(1350:1425),time_series(1350:1425),'-k','linewidth',1)
+subplot(1,3,2)
+plot(tVp(775:950),time_series(775:950),'-r')
 hold on
-plot(tVs_iso(1350:1425),time_series(1350:1425),'-r','linewidth',1)
-xlim([2000 10000])
-ylim([1.55 1.90])
-axis ij
-grid on
-%set(gca,'fontsize',10)
+plot(tVs(775:950),time_series(775:950),'-b')
+%plot(1000*tDensity(775:950),time_series(775:950),'-k')
 
-
-
-
-set(gcf, 'PaperUnits', 'inches');
-x_width=4.2; y_width=3.1;
-set(gcf, 'PaperPosition', [0 0 x_width y_width]); %
-saveas(gcf,'fig_seismic_p.jpg')
-
+print(gcf, '-dpng', '-loose', '-r100', 'model_backus_l100');
 
 
 

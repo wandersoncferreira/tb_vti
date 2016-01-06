@@ -19,25 +19,35 @@ ls = ceil((ls+1)/2)*2 - 1;
 %h is the half length
 h = (ls-1)/2;
 
-
 %padding the Lame parameters curves using a proper padding length in the
 %beggining and end of the curves accordingly with the average window size
 
-%mu
-%mu_pi = [zeros(h,1);mu];
-%mu_pd = [mu_pi;zeros((ceil((size(mu_pi,1)+h + 1)/2)*2 - 1) - size(mu_pi,1),1)];
+if(h > 1)
+    mu_pi = [mu(1,1).*ones(h,1);mu];
+    mu_pd = [mu_pi; mu(end,1).*ones((ceil((size(mu_pi,1)+h + 1)/2)*2 - 1) - size(mu_pi,1),1)];
+else
+    mu_pd = mu;
+end
 
 %lambda
-%lambda_pi = [zeros(h,1);lambda];
-%lambda_pd = [lambda_pi;zeros((ceil((size(lambda_pi,1)+h + 1)/2)*2 - 1) - size(lambda_pi,1) ,1)];
+if( h > 1)
+    lambda_pi = [lambda(1,1).*ones(h,1);lambda];
+    lambda_pd = [lambda_pi;lambda(end,1).*ones((ceil((size(lambda_pi,1)+h + 1)/2)*2 - 1) - size(lambda_pi,1) ,1)];
+else
+    lambda_pd = lambda;
+end
 
 %rho
-%rho_pi = [zeros(h,1);rho];
-%rho_pd = [rho_pi;zeros((ceil((size(rho_pi,1)+h + 1)/2)*2 - 1) - size(rho_pi,1),1)];
+if( h > 1)
+    rho_pi = [rho(1,1).*ones(h,1);rho];
+    rho_pd = [rho_pi;mu(1,1).*ones((ceil((size(rho_pi,1)+h + 1)/2)*2 - 1) - size(rho_pi,1),1)];
+else
+    rho_pd = rho;
+end
 
-mu_pd = mu;
-rho_pd = rho;
-lambda_pd = lambda;
+%mu_pd = mu;
+%rho_pd = rho;
+%lambda_pd = lambda;
 
 p = (h+1);
 %Now the only thing we need to use is to apply the Backus averaging inside
