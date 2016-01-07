@@ -50,7 +50,7 @@ tF = interp1(depth(:,1),F(:,1),profun);
 tL = interp1(depth(:,1),L(:,1),profun);
 tN = interp1(depth(:,1),N(:,1),profun);
 
-tVp = 30.48.*((1./tsonicd).*10^(6));%cm/s
+tVp = ((1./tsonicd).*10^(6));%ft/s
 
 
 %beginning of the file until the start log time.

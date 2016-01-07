@@ -1,4 +1,4 @@
-function [data_out,tDelta,tEpslon,tGamma,tVp,Vpo,tDensity,time_series,offset] = modeling(depth,Vp,Vs,rho_i)
+function [Vpo,Vso,epslon,delta,gamma,rho,tDensity,time_series,offset] = modeling(depth,Vp,Vs,rho_i)
 
 %initial parameters
 start_log_time = 0;
@@ -36,6 +36,7 @@ N=N';
 %I believe I should change everything to time domain right here.
 %the depth-to-time discretization
 Vpo = Vpo./(30.48);
+Vso = Vso./(30.48);
 
 %taking care of NaN
 pNAN = find(isnan(Vpo));
@@ -93,7 +94,7 @@ sonic_vti_ft(pINF) = [];
 
 
 %modeling
-theta = (0:0.5:90).*pi/180;
+theta = (0:1:89).*pi/180;
 theta_p = theta;
 theta_s = theta;
 %theta = 0.506145483078356;
@@ -101,21 +102,19 @@ theta_s = theta;
 matrix_theta_P = theta_p;
 matrix_theta_S = theta_s;
 
+
 for i = 1:size(tA,2)
     
     [vP_phi,P_phi,P_p,vP] = vp_ray(tA(i),tC(i),tF(i),tN(i),tL(i),tDensity(i),theta_p);
     [vS_phi,S_phi,S_p,vS] = vs_ray(tA(i),tC(i),tF(i),tN(i),tL(i),tDensity(i),theta_s);
     
-    if i+1 <= size(tA,2)
+    if i <= size(tA,2)-1
         [theta_p] = p_next(tA(i+1),tC(i+1),tF(i+1),tL(i+1),tDensity(i+1),P_p,1); %when P wave is used on the quartic equation I can always
         %choose the largest solution as the angle for the transmitted ray.
 
-        [theta_s] = p_next(tA(i+1),tC(i+1),tF(i+1),tL(i+1),tDensity(i+1),S_p,2); %indx = 2 means SV wave 
-        
-        
+        [theta_s] = p_next(tA(i+1),tC(i+1),tF(i+1),tL(i+1),tDensity(i+1),S_p,2); %indx = 2 means SV wave       
         matrix_theta_P(i+1,:) = theta_p;
         matrix_theta_S(i+1,:) = theta_s;
-        
     end 
     
     matrix_vPphi(i,:)  = vP_phi;
@@ -130,10 +129,13 @@ for i = 1:size(tA,2)
 end
 
 %changing the velocities for ft/s
+
 matrix_vPphi  = matrix_vPphi./(30.48);
 matrix_vSphi  = matrix_vSphi./(30.48);
 matrix_vP     =  matrix_vP./(30.48);
 matrix_vS     =  matrix_vS./(30.48);
+
+matrix_vS(1:10,1)
 
 %computing the thicknesses
 for i=1:size(time_series,2)-1

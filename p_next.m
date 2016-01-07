@@ -28,17 +28,22 @@ tan4 = ((a2 + b2).*p2 - (cos(gama)).^(2)).*(a2.*p2 - (cos(gama)).^(2));
 
 
 coefficients = [tan4;tan3;tan2;tan1;tan0]';
-
-if indx == 1
+indx
+if indx == 1 || indx == 2 
     for i = 1:size(coefficients,1)
 
+    coefficients(i,1:5)   ; 
     root = roots(coefficients(i,1:5));
     root = atan(root);
+    if indx == 2
+        root
+    end
     theta_new(i) = max(root);
+    
     end
 end
 
-if indx == 2
+if indx == 3
     for i = 1:size(coefficients,1)
 
     root = roots(coefficients(i,1:5));

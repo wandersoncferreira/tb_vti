@@ -18,10 +18,10 @@ ls = ceil((ls+1)/2)*2 - 1;
 
 %h is the half length
 h = (ls-1)/2;
-
-%padding the Lame parameters curves using a proper padding length in the
-%beggining and end of the curves accordingly with the average window size
-
+% 
+% %padding the Lame parameters curves using a proper padding length in the
+% %beggining and end of the curves accordingly with the average window size
+% 
 if(h > 1)
     mu_pi = [mu(1,1).*ones(h,1);mu];
     mu_pd = [mu_pi; mu(end,1).*ones((ceil((size(mu_pi,1)+h + 1)/2)*2 - 1) - size(mu_pi,1),1)];
@@ -101,7 +101,7 @@ for i = 1:size(Vp,1) - ((ls-1))
     A( p(1) + i - 1 ) = 4.*x + z.*z./u;
     C( p(1) + i - 1 ) = 1./u;
     F( p(1) + i - 1 ) = (z./u);
-    L( p(1) + i - 1 ) = 1./v;
+    L( p(1) + i - 1 ) = v;
     M( p(1) + i - 1 ) = w;
     
     rho_f( p(1) + i - 1 ) = nansum((1/ls) .*rho_e); 
