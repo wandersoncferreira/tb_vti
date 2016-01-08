@@ -135,7 +135,6 @@ matrix_vSphi  = matrix_vSphi./(30.48);
 matrix_vP     =  matrix_vP./(30.48);
 matrix_vS     =  matrix_vS./(30.48);
 
-matrix_vS(1:10,1)
 
 %computing the thicknesses
 for i=1:size(time_series,2)-1
@@ -200,7 +199,7 @@ data_out = raytrace_nmo(synt_seismic,dt,control_time,time_series,100);
 
 figure
 subplot(1,3,1)
-plotseis(data_out(775:950,:),time_series(775:950),offset);
+plotseismic(data_out(775:950,:),time_series(775:950),offset);
 xlabel('Offset','Fontsize',7);
 ylabel('TWT (s)', 'Fontsize', 7);
 set(gca,'fontsize',10)

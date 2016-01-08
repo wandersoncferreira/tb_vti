@@ -10,19 +10,15 @@ beta = theta + gama;
 
 X1  = L./rho;
 X2  = (A-L)./(2*rho);
-X2p = (A-L); % Test to see the difference
 X3  = (C-L)./(2*rho);
-X3p = (C-L);
 X4  = ( (F + L).^(2)  - (A-L).*(C-L) )./(4*(rho.^(2)));
 
 %velocity
  
 T1 = X1 + X2.*((sin(theta)).^(2)) + X3.*((cos(theta)).^(2));
-T2p = sqrt( (0.5*rho).*( X2p.*((sin(theta)).^(2)) + X3p.*((cos(theta)).^(2)) ).^(2)  + X4.*(sin(2*theta)).^(2));
-
 T2 = sqrt( ( X2.*((sin(theta)).^(2)) + X3.*((cos(theta)).^(2)) ).^(2)  + X4.*(sin(2*theta)).^(2));
-v = sqrt (T1 - T2)  %the sign is MINUS for SV-wave 
-vp = sqrt(T1 - T2p
+v = sqrt (T1 - T2);  %the sign is MINUS for SV-wave 
+
 
 %derivative
 P8 = (X2 - X3).*sin(2.*theta); 

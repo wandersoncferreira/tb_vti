@@ -101,7 +101,7 @@ for i = 1:size(Vp,1) - ((ls-1))
     A( p(1) + i - 1 ) = 4.*x + z.*z./u;
     C( p(1) + i - 1 ) = 1./u;
     F( p(1) + i - 1 ) = (z./u);
-    L( p(1) + i - 1 ) = v;
+    L( p(1) + i - 1 ) = 1./v;
     M( p(1) + i - 1 ) = w;
     
     rho_f( p(1) + i - 1 ) = nansum((1/ls) .*rho_e); 
