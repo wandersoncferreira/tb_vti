@@ -7,12 +7,14 @@ function [A,C,F,L,M,rho_f] = backus(Vp,Vs,rho,l)
 Vp = (30.48).*Vp;
 Vs = (30.48).*Vs;
 
+
 %Lame' parameters for each isotropic thin layer
 lambda = rho.*(Vp.^(2) - 2.*Vs.^(2));
 mu = rho.*Vs.^(2);
 
 %length of the average window (in samples)
 ls = (l/1);
+
 %force to be the nearest odd number
 ls = ceil((ls+1)/2)*2 - 1;
 
@@ -32,7 +34,7 @@ end
 %lambda
 if( h > 1)
     lambda_pi = [lambda(1,1).*ones(h,1);lambda];
-    lambda_pd = [lambda_pi;lambda(end,1).*ones((ceil((size(lambda_pi,1)+h + 1)/2)*2 - 1) - size(lambda_pi,1) ,1)];
+    lambda_pd = [lambda_pi; lambda(end,1).*ones((ceil((size(lambda_pi,1)+h + 1)/2)*2 - 1) - size(lambda_pi,1) ,1)];
 else
     lambda_pd = lambda;
 end
@@ -40,7 +42,7 @@ end
 %rho
 if( h > 1)
     rho_pi = [rho(1,1).*ones(h,1);rho];
-    rho_pd = [rho_pi;mu(1,1).*ones((ceil((size(rho_pi,1)+h + 1)/2)*2 - 1) - size(rho_pi,1),1)];
+    rho_pd = [rho_pi; rho(end,1).*ones((ceil((size(rho_pi,1)+h + 1)/2)*2 - 1) - size(rho_pi,1),1)];
 else
     rho_pd = rho;
 end
@@ -55,17 +57,16 @@ p = (h+1);
 %(size(mu_pd,1)-h-p(1)+1)
 
 %prealocating arrays
-A = zeros(1,size(Vp,1));
-C = zeros(1,size(Vp,1));
-F = zeros(1,size(Vp,1));
-L = zeros(1,size(Vp,1));
-M = zeros(1,size(Vp,1));
-rho_f = zeros(1,size(Vp,1));
+A = zeros(1,size(mu_pd,1));
+C = zeros(1,size(mu_pd,1));
+F = zeros(1,size(mu_pd,1));
+L = zeros(1,size(mu_pd,1));
+M = zeros(1,size(mu_pd,1));
+rho_f = zeros(1,size(mu_pd,1));
 
 
-for i = 1:size(Vp,1) - ((ls-1))
+for i = 1:size(mu_pd,1) - ((ls-1))
    
-
     mu_e     = mu_pd(p(1)+i-1-h:p(1)+i-1+h);
     lambda_e = lambda_pd(p(1)+i-1-h:p(1)+i-1+h);
     rho_e    = rho_pd(p(1)+i-1-h:p(1)+i-1+h);
@@ -98,15 +99,38 @@ for i = 1:size(Vp,1) - ((ls-1))
     v = nansum(  vr  );
     
     %p(1) + i - 1
-    A( p(1) + i - 1 ) = 4.*x + z.*z./u;
-    C( p(1) + i - 1 ) = 1./u;
-    F( p(1) + i - 1 ) = (z./u);
-    L( p(1) + i - 1 ) = 1./v;
-    M( p(1) + i - 1 ) = w;
+    A( p(1) + i - 2 ) = 4.*x + z.*z./u;
+    C( p(1) + i - 2 ) = 1./u;
+    F( p(1) + i - 2 ) = (z./u);
+    L( p(1) + i - 2 ) = 1./v;
+    M( p(1) + i - 2 ) = w;
     
-    rho_f( p(1) + i - 1 ) = nansum((1/ls) .*rho_e); 
+    rho_f( p(1) + i - 2 ) = nansum((1/ls) .*rho_e); 
     
 end
+
+A(1:50) = [];
+A(end-50:end)=[];
+
+C(1:50) = [];
+C(end-50:end)=[];
+
+F(1:50) = [];
+F(end-50:end)=[];
+
+
+L(1:50) = [];
+L(end-50:end)=[];
+
+
+M(1:50) = [];
+M(end-50:end)=[];
+
+
+rho_f(1:50) = [];
+rho_f(end-50:end)=[];
+
+
 
 end
 

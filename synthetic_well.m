@@ -51,7 +51,7 @@ for j = 1:dim   %will increase the offset value
             
     
 %calculating the reflection coefficient
-        if isreal(rcc)==1 && angulos < (85)*pi/180 && rcc ~= 0
+        if isreal(rcc)== 1 && angulos < (85)*pi/180 && rcc ~= 0
       
         reflectivity(j,:) = array_effect(reflectivity(j,:),rcc,length,V1,angE,time,array_time,dt);
   
